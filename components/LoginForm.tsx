@@ -7,7 +7,7 @@ import {useFormStatus} from "react-dom";
 import SuccessMessage from "./SuccessMessage";
 
 type ErrorState = {
-    field?: string;
+    field?: string | number;
     message?: string;
 } | null;
 
@@ -40,7 +40,7 @@ export default function LoginForm() {
 
     return (
         <div className="flex items-center justify-center min-h-screen">
-            <form className="bg-white p-8 rounded shadow-md w-30" onSubmit={handleSubmit}>
+            <form className="bg-white p-8 rounded shadow-md min-w-[450px]" onSubmit={handleSubmit}>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
                         Email
@@ -57,6 +57,7 @@ export default function LoginForm() {
                             }`}
                         />
                     </div>
+                    {error && error.field === "email" && <p className="text-red-500 text-md italic font-bold mb-2">{error.message}</p>}
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="username">
@@ -74,6 +75,7 @@ export default function LoginForm() {
                             }`}
                         />
                     </div>
+                    {error && error.field === "username" && <p className="text-red-500 text-md italic font-bold mb-2">{error.message}</p>}
                 </div>
                 <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
