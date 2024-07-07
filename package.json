@@ -10,14 +10,20 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.4",
+<<<<<<< HEAD
     "@prisma/client": "^5.16.1",
+=======
+    "@types/validator": "^13.12.0",
+>>>>>>> 01ef553d730d5535d15cc03fd20802cc740635b3
     "heroicons": "^2.1.4",
     "i": "^0.3.7",
     "next": "14.2.4",
     "npm": "^10.8.1",
     "prisma": "^5.16.1",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "validator": "^13.12.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
