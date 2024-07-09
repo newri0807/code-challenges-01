@@ -5,8 +5,7 @@ import {PrismaClient} from "@prisma/client";
 import bcrypt from "bcrypt";
 import {z} from "zod";
 import {redirect} from "next/navigation";
-
-const prisma = new PrismaClient();
+import db from "@/lib/db";
 
 const loginSchema = z.object({
     email: z.string().email(),
@@ -29,7 +28,7 @@ export async function loginAction({email, password}: {email: string; password: s
     }
 
     // 데이터베이스에서 사용자 존재 여부 확인
-    const user = await prisma.user.findUnique({
+    const user = await db.user.findUnique({
         where: {
             email,
         },
@@ -38,7 +37,7 @@ export async function loginAction({email, password}: {email: string; password: s
     if (!user) {
         return {
             success: false,
-            message: "사용자를 찾을 수 없습니다. 이메일을 확인하세요.",
+            message: "User not found. Please check your email.",
         };
     }
 
@@ -47,7 +46,7 @@ export async function loginAction({email, password}: {email: string; password: s
     if (!passwordMatch) {
         return {
             success: false,
-            message: "비밀번호가 일치하지 않습니다.",
+            message: "Password does not match. Please check your password.",
         };
     }
 
@@ -60,5 +59,4 @@ export async function loginAction({email, password}: {email: string; password: s
 
     // Redirect to home page after successful login
     redirect("/home");
-    
 }

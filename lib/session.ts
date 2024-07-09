@@ -11,11 +11,5 @@ const sessionOptions = {
 };
 
 export default async function getSession() {
-    const session = await getIronSession<SessionContent>(cookies(), sessionOptions);
-    return {
-        ...session,
-        save: async () => {
-            await session.save();
-        },
-    };
+    return getIronSession<SessionContent>(cookies(), sessionOptions);
 }

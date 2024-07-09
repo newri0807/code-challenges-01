@@ -1,4 +1,5 @@
 import bcrypt from "bcrypt";
+import getSession from "./session";
 
 const saltRounds = 10;
 
