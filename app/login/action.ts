@@ -1,25 +1,23 @@
 "use server";
 
+import getSession from "@/lib/session";
+import {PrismaClient} from "@prisma/client";
+import bcrypt from "bcrypt";
 import {z} from "zod";
+import {redirect} from "next/navigation";
+
+const prisma = new PrismaClient();
 
 const loginSchema = z.object({
-    email: z
-        .string()
-        .email()
-        .refine((email) => email.endsWith("@zod.com"), {
-            message: "Only emails with the domain '@zod.com' are allowed.",
-        }),
-    username: z.string().min(5, {message: "Username must be at least 5 characters long."}),
-    password: z
-        .string()
-        .min(10, {message: "Password must be at least 10 characters long."})
-        .regex(/\d/, {message: "Password must include at least one number."}),
+    email: z.string().email(),
+    password: z.string().min(5, {message: "Password must be at least 5 characters long."}).regex(/\d/, {
+        message: "Password must include at least one number.",
+    }),
 });
 
-export async function loginAction({email, username, password}: {email: string; username: string; password: string}) {
-    // Validate the form data using Zod
-    const validation = loginSchema.safeParse({email, username, password});
-    console.log("error", validation);
+export async function loginAction({email, password}: {email: string; password: string}) {
+    // 입력값 검증
+    const validation = loginSchema.safeParse({email, password});
 
     if (!validation.success) {
         const error = validation.error.errors[0];
@@ -28,13 +26,39 @@ export async function loginAction({email, username, password}: {email: string; u
             field: error.path[0],
             message: error.message,
         };
-    } else {
-        return {success: true};
     }
 
-    // if (password === "12345") {
-    //     return {success: true};
-    // } else {
-    //     return {success: false, field: "password", message: "Wrong password"};
-    // }
+    // 데이터베이스에서 사용자 존재 여부 확인
+    const user = await prisma.user.findUnique({
+        where: {
+            email,
+        },
+    });
+
+    if (!user) {
+        return {
+            success: false,
+            message: "사용자를 찾을 수 없습니다. 이메일을 확인하세요.",
+        };
+    }
+
+    // 비밀번호 확인
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
+        return {
+            success: false,
+            message: "비밀번호가 일치하지 않습니다.",
+        };
+    }
+
+    // 세션 저장
+    const session = await getSession();
+    session.id = user.id;
+    await session.save();
+
+    console.log("세션 저장:", session);
+
+    // Redirect to home page after successful login
+    redirect("/home");
+    
 }

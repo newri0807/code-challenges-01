@@ -10,18 +10,19 @@
   },
   "dependencies": {
     "@heroicons/react": "^2.1.4",
-<<<<<<< HEAD
+    "@hookform/resolvers": "^3.9.0",
     "@prisma/client": "^5.16.1",
-=======
-    "@types/validator": "^13.12.0",
->>>>>>> 01ef553d730d5535d15cc03fd20802cc740635b3
+    "@types/bcrypt": "^5.0.2",
+    "bcrypt": "^5.1.1",
     "heroicons": "^2.1.4",
     "i": "^0.3.7",
+    "iron-session": "^8.0.2",
     "next": "14.2.4",
     "npm": "^10.8.1",
     "prisma": "^5.16.1",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.52.1",
     "validator": "^13.12.0",
     "zod": "^3.23.8"
   },
