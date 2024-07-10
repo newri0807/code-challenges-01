@@ -34,7 +34,7 @@ export default function LoginForm() {
         if (result?.success === false) {
             setError(result.message);
         } else {
-            router.push("/profile");
+            router.push("/");
         }
     };
 

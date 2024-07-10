@@ -58,5 +58,5 @@ export async function loginAction({email, password}: {email: string; password: s
     console.log("세션 저장:", session);
 
     // Redirect to home page after successful login
-    redirect("/home");
+    redirect("/");
 }

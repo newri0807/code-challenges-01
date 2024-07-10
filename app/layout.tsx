@@ -1,6 +1,7 @@
 import type {Metadata} from "next";
 import {Inter} from "next/font/google";
 import "./globals.css";
+import LeftSidebar from '@/components/LeftSidebar';
 
 const inter = Inter({subsets: ["latin"]});
 
@@ -15,11 +16,16 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body className={inter.className + ` font-mono`}>
-                <main className="flex h-screen w-full flex-col items-center justify-center align-middle">
+                <div className="flex h-screen bg-black text-white">
+                    <LeftSidebar />
+                    {children}
+                </div>
+                
+                {/* <main className="flex h-screen w-full flex-col items-center justify-center align-middle">
                     <div className="items-center justify-between text-sm lg:flex">{children}</div>
-                </main>
+                </main> */}
             </body>
         </html>
     );

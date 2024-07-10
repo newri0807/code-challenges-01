@@ -1,27 +1,15 @@
-import Link from "next/link";
+import React from "react";
+import LeftSidebar from "@/components/LeftSidebar";
+import TweetList from "@/components/TweetList";
 
-export default function Home() {
-    return (
-        <div className="min-h-screen flex flex-col items-center justify-center ">
-            <div className="text-center mb-12">
-                <h1 className="text-8xl font-bold text-gray-900">🖤</h1>
-                <p className="text-2xl py-2 text-gray-600">Welcome to @@@</p>
-                <p className="text-xl text-gray-500">Join us at @@@ and enjoy!</p>
-            </div>
-            <div className="text-center">
-                <Link
-                    href="/create-account"
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full text-center inline-block transition duration-200 ease-in-out"
-                >
-                    Get Started
-                </Link>
-                <p className="mt-4 text-gray-600">
-                    Already have an account?
-                    <Link href="/log-in" className="ml-1 text-blue-500 hover:text-blue-600">
-                        Log in
-                    </Link>
-                </p>
-            </div>
-        </div>
-    );
+interface TwitterPageProps {
+    searchParams: {page?: string};
 }
+
+const TwitterPage: React.FC<TwitterPageProps> = ({searchParams}) => {
+    const page = typeof searchParams.page === "string" ? Number(searchParams.page) : 1;
+
+    return <TweetList initialPage={page} />;
+};
+
+export default TwitterPage;
