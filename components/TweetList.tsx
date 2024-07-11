@@ -40,21 +40,21 @@ const TweetList: React.FC<TweetListProps> = async ({initialPage}) => {
                             </div>
                             <p className="mt-2">{tweet.tweet}</p>
                             <div className="flex justify-between pt-4">
-                                <div className="flex items-center justify-center space-x-2">
-                                    <ChatBubbleLeftIcon className="w-6 h-6 text-gray-400" />
-                                    <span className="text-sm font-bold">댓글</span>
+                                <div className="flex items-center justify-center space-x-2 group hover:text-blue-500 cursor-pointer">
+                                    <ChatBubbleLeftIcon className="w-6 h-6 text-gray-400 group-hover:text-blue-500" />
+                                    <span className="text-md font-bold">댓글</span>
                                 </div>
-                                <div className="flex items-center justify-center space-x-2">
-                                    <ArrowPathRoundedSquareIcon className="w-6 h-6 text-gray-400" />
-                                    <span className="text-sm font-bold">리트윗</span>
+                                <div className="flex items-center justify-center space-x-2 group hover:text-green-500">
+                                    <ArrowPathRoundedSquareIcon className="w-6 h-6 text-gray-400 group-hover:text-green-500 cursor-pointer" />
+                                    <span className="text-md font-bold">리트윗</span>
                                 </div>
-                                <div className="flex items-center justify-center space-x-2">
-                                    <HeartIcon className="w-6 h-6 text-gray-400" />
-                                    <span className="text-sm font-bold">좋아요</span>
+                                <div className="flex items-center justify-center space-x-2 group hover:text-red-500 cursor-pointer">
+                                    <HeartIcon className="w-6 h-6 text-gray-400 group-hover:text-red-500" />
+                                    <span className="text-md font-bold">좋아요</span>
                                 </div>
-                                <div className="flex items-center justify-center space-x-2">
-                                    <EyeIcon className="w-6 h-6 text-gray-400" />
-                                    <span className="text-sm font-bold">조회수</span>
+                                <div className="flex items-center justify-center space-x-2 group hover:text-yellow-500 cursor-pointer">
+                                    <EyeIcon className="w-6 h-6 text-gray-400 group-hover:text-yellow-500" />
+                                    <span className="text-md font-bold">조회수</span>
                                 </div>
                             </div>
                         </div>

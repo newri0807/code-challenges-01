@@ -5,7 +5,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {z} from "zod";
 import {useRouter} from "next/navigation";
-import {loginAction} from "@/app/log-in/action";
+import {loginAction} from "@/app/(not-home)/log-in/action";
 import Link from "next/link";
 
 const schema = z.object({
@@ -39,32 +39,32 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="max-w-md mx-auto bg-white border border-gray-300 rounded-2xl shadow-sm overflow-hidden">
+        <div className="max-w-md mx-auto  border border-gray-700 rounded-2xl shadow-sm overflow-hidden">
             <div className="p-12">
-                <h2 className="text-2xl font-bold text-center text-gray-900 mb-10">Log in to your account</h2>
+                <h2 className="text-2xl font-bold text-center text-gray-200 mb-10">Log in to your account</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-6">
-                        <label htmlFor="email" className="block text-gray-600 text-sm font-medium mb-2">
+                        <label htmlFor="email" className="block text-gray-300 text-sm font-medium mb-2">
                             Email address
                         </label>
                         <input
                             id="email"
                             type="email"
                             {...register("email")}
-                            className="appearance-none border border-gray-300 rounded-full w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="appearance-none border border-gray-700 rounded-full w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="you@example.com"
                         />
                         {errors.email && <p className="text-red-500 text-xs mt-2">{errors.email.message}</p>}
                     </div>
                     <div className="mb-6">
-                        <label htmlFor="password" className="block text-gray-600 text-sm font-medium mb-2">
+                        <label htmlFor="password" className="block text-gray-300 text-sm font-medium mb-2">
                             Password
                         </label>
                         <input
                             id="password"
                             type="password"
                             {...register("password")}
-                            className="appearance-none border border-gray-300 rounded-full w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="appearance-none border border-gray-700 rounded-full w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                             placeholder="********"
                         />
                         {errors.password && <p className="text-red-500 text-xs mt-2">{errors.password.message}</p>}

@@ -1,8 +1,5 @@
 import type {Metadata} from "next";
-import {Inter} from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({subsets: ["latin"]});
+import LeftSidebar from "@/components/LeftSidebar";
 
 export const metadata: Metadata = {
     title: "clone tweeter Next App",
@@ -15,8 +12,9 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={inter.className + ` font-mono bg-black *:text-white`}>{children}</body>
-        </html>
+        <div className="flex h-screen ">
+            <LeftSidebar />
+            {children}
+        </div>
     );
 }

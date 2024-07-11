@@ -41,48 +41,48 @@ export default function CreateAccount() {
     };
 
     return (
-        <div className="max-w-md mx-auto bg-white border border-gray-300 rounded-2xl shadow-sm overflow-hidden">
+        <div className="max-w-md mx-auto  border border-gray-700 rounded-2xl shadow-sm overflow-hidden">
             <div className="p-12">
                 <div>
-                    <h2 className="text-center text-3xl font-extrabold text-gray-900">Create an account</h2>
+                    <h2 className="text-center text-3xl font-extrabold text-gray-200">Create an account</h2>
                 </div>
                 <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmit)}>
                     <div className="space-y-4">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+                            <label htmlFor="email" className="block text-sm font-medium text-gray-300">
                                 Email address
                             </label>
                             <input
                                 id="email"
                                 type="email"
                                 {...register("email")}
-                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="Email address"
                             />
                             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
                         </div>
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-300">
                                 Password
                             </label>
                             <input
                                 id="password"
                                 type="password"
                                 {...register("password")}
-                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="Password"
                             />
                             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
                         </div>
                         <div>
-                            <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+                            <label htmlFor="username" className="block text-sm font-medium text-gray-300">
                                 Name
                             </label>
                             <input
                                 id="username"
                                 type="text"
                                 {...register("username")}
-                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-300 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                 placeholder="Name"
                             />
                             {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>}
