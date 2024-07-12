@@ -1,6 +1,7 @@
 import {EllipsisHorizontalIcon, HomeIcon, MagnifyingGlassIcon, UserIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React from "react";
+import AddTweetButton from './AddTweetButton';
 
 interface NavItemProps {
     icon: React.ReactNode;
@@ -29,7 +30,7 @@ export default function LeftSidebar() {
                 <NavItem icon={<UserIcon className="h-6 w-6" />} label="프로필" href="/profile" />
                 <NavItem icon={<EllipsisHorizontalIcon className="h-6 w-6" />} label="더 보기" href="/more" />
             </nav>
-            <button className="w-full bg-blue-500 text-white rounded-full py-3 mt-4 font-bold">게시하기</button>
+           <AddTweetButton />
         </div>
     );
 }

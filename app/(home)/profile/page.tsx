@@ -29,7 +29,7 @@ export default async function ProfilePage() {
         "use server";
         const session = await getSession();
         await session.destroy();
-        redirect("/log-in");
+        redirect("/");
     };
 
     return (

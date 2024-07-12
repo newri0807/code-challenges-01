@@ -10,6 +10,10 @@ import {
     EyeIcon as FullEyeIcon,
     HeartIcon as FullHeartIcon,
 } from "@heroicons/react/24/solid";
+import TweetForm from "@/components/TweetForm";
+import Modal from "@/components/Modal";
+import getSession from "@/lib/session";
+import PopupTweetActions from "@/components/PopupTweetActions";
 
 export default async function TweetPage({params}: {params: {id: string}}) {
     const tweet = await db.tweet.findUnique({
@@ -21,6 +25,9 @@ export default async function TweetPage({params}: {params: {id: string}}) {
         notFound();
     }
 
+    const session = await getSession();
+    const isOwner = session?.id === tweet.userId;
+
     return (
         <div className="bg-black text-white min-h-screen w-full">
             {/* Header */}
@@ -31,7 +38,8 @@ export default async function TweetPage({params}: {params: {id: string}}) {
                 </Link>
             </div>
             <div className="border-b border-gray-700 pb-4 mb-4 p-4">
-                <div className="flex items-center space-x-4">
+                 <div className="flex w-full justify-between item-center">
+<div className="flex items-center space-x-4">
                     <Image
                         src={"/default-avatar.png"}
                         alt={tweet.user.username}
@@ -41,6 +49,11 @@ export default async function TweetPage({params}: {params: {id: string}}) {
                     />
                     <p className="font-semibold text-xl">{tweet.user.username}</p>
                 </div>
+
+                {isOwner && <PopupTweetActions tweetId={tweet.id} />}
+
+                 </div>
+                
                 <p className="mt-4 text-2xl">{tweet.tweet}</p>
                 <p className="text-sm text-gray-500 mt-2">게시일: {new Date(tweet.created_at).toLocaleString()}</p>
             </div>

@@ -2,15 +2,8 @@ import React from "react";
 import Link from "next/link";
 import {ArrowLeftIcon, ArrowRightIcon, ArrowPathRoundedSquareIcon, ChatBubbleLeftIcon, EyeIcon, HeartIcon} from "@heroicons/react/24/outline";
 import {getTweets} from "@/app/actions";
-
-interface Tweet {
-    id: number;
-    tweet: string;
-    created_at: Date;
-    user: {
-        username: string;
-    };
-}
+import getSession from "@/lib/session";
+import TweetItem from "./TweetItem";
 
 interface TweetListProps {
     initialPage: number;
@@ -19,6 +12,7 @@ interface TweetListProps {
 const TweetList: React.FC<TweetListProps> = async ({initialPage}) => {
     const limit = 10;
     const {tweets, totalPages} = await getTweets(initialPage, limit);
+    const session = await getSession();
 
     return (
         <div className="flex-1 border-r border-gray-700 overflow-y-auto">
@@ -26,39 +20,8 @@ const TweetList: React.FC<TweetListProps> = async ({initialPage}) => {
                 <h2 className="text-xl font-bold">추천</h2>
             </div>
             <div className="p-4 space-y-4">
-                {tweets.map((tweet: Tweet) => (
-                    <Link href={`/tweets/${tweet.id}`} key={tweet.id} className="block">
-                        <div className="border border-gray-700 rounded-lg p-4 hover:bg-gray-900 transition">
-                            <div className="flex items-center space-x-3">
-                                <div className="w-12 h-12 bg-gray-600 rounded-full"></div>
-                                <div>
-                                    <p className="font-bold">{tweet.user.username}</p>
-                                    <p className="text-gray-500">
-                                        @{tweet.user.username.toLowerCase()} · {new Date(tweet.created_at).toLocaleString()}
-                                    </p>
-                                </div>
-                            </div>
-                            <p className="mt-2">{tweet.tweet}</p>
-                            <div className="flex justify-between pt-4">
-                                <div className="flex items-center justify-center space-x-2 group hover:text-blue-500 cursor-pointer">
-                                    <ChatBubbleLeftIcon className="w-6 h-6 text-gray-400 group-hover:text-blue-500" />
-                                    <span className="text-md font-bold">댓글</span>
-                                </div>
-                                <div className="flex items-center justify-center space-x-2 group hover:text-green-500">
-                                    <ArrowPathRoundedSquareIcon className="w-6 h-6 text-gray-400 group-hover:text-green-500 cursor-pointer" />
-                                    <span className="text-md font-bold">리트윗</span>
-                                </div>
-                                <div className="flex items-center justify-center space-x-2 group hover:text-red-500 cursor-pointer">
-                                    <HeartIcon className="w-6 h-6 text-gray-400 group-hover:text-red-500" />
-                                    <span className="text-md font-bold">좋아요</span>
-                                </div>
-                                <div className="flex items-center justify-center space-x-2 group hover:text-yellow-500 cursor-pointer">
-                                    <EyeIcon className="w-6 h-6 text-gray-400 group-hover:text-yellow-500" />
-                                    <span className="text-md font-bold">조회수</span>
-                                </div>
-                            </div>
-                        </div>
-                    </Link>
+                {tweets.map((tweet) => (
+                    <TweetItem key={tweet.id} tweet={tweet} session={session} />
                 ))}
             </div>
             <div className="flex justify-between items-center p-4 border-t border-gray-700">
