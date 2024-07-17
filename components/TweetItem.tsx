@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {useRouter} from "next/navigation";
 import {ChatBubbleLeftIcon, ArrowPathRoundedSquareIcon, HeartIcon, EyeIcon} from "@heroicons/react/24/outline";
 import PopupTweetActions from "./PopupTweetActions";
@@ -10,6 +10,7 @@ import {CommentCount} from "@/components/CommentCount";
 import {ViewCount} from "@/components/ViewCount";
 import {RetweetButton} from "./RetweetButton";
 import Link from "next/link";
+import LoadingSpinner from "./LoadingSpinner";
 
 interface Tweet {
     id: number;
@@ -31,6 +32,15 @@ interface TweetItemProps {
 
 const TweetItem: React.FC<TweetItemProps> = ({tweet, sessionId}) => {
     const router = useRouter();
+    const [isImageLoading, setIsImageLoading] = useState(false);
+    const [showImage, setShowImage] = useState(false);
+
+    useEffect(() => {
+        if (typeof tweet.image === "string" && tweet.image.trim() !== "") {
+            setShowImage(true);
+            setIsImageLoading(true);
+        }
+    }, [tweet.image]);
 
     const handleTweetClick = (event: React.MouseEvent<HTMLDivElement>) => {
         if ((event.target as HTMLElement).closest(".no-propagation")) {
@@ -42,6 +52,8 @@ const TweetItem: React.FC<TweetItemProps> = ({tweet, sessionId}) => {
     const handleActionClick = (event: React.MouseEvent) => {
         event.stopPropagation();
     };
+
+    console.log(tweet.id, tweet.image);
 
     return (
         <div className="relative">
@@ -73,14 +85,17 @@ const TweetItem: React.FC<TweetItemProps> = ({tweet, sessionId}) => {
                     )}
                 </div>
                 <p className="mt-2">{tweet.tweet}</p>
-                {tweet.image && (
-                    <div className="my-4">
+                {showImage && (
+                    <div className="my-4 relative">
+                        {isImageLoading && <LoadingSpinner />}
                         <Image
-                            src={tweet.image}
+                            src={tweet.image as string}
                             alt="Tweet image"
                             width={400}
                             height={300}
-                            className="rounded-lg max-h-60 w-full h-auto object-contain "
+                            className={`rounded-lg max-h-60 w-full h-auto object-contain ${isImageLoading ? "invisible" : "visible"}`}
+                            onLoad={() => setIsImageLoading(false)}
+                            onError={() => setIsImageLoading(false)}
                         />
                     </div>
                 )}

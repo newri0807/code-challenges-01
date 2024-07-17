@@ -36,7 +36,10 @@ export async function editTweet(id: number, tweet: string, imageUrl?: string | n
 
     const updatedTweet = await db.tweet.update({
         where: {id},
-        data: {tweet, image: imageUrl ?? existingTweet.image},
+        data: {
+            tweet,
+            image: imageUrl === undefined ? existingTweet.image : imageUrl,
+        },
     });
     revalidatePath(`/`);
     return updatedTweet;

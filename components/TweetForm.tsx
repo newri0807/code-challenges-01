@@ -9,6 +9,7 @@ import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import Image from "next/image";
 import {DocumentArrowUpIcon, XMarkIcon} from "@heroicons/react/24/outline";
 import {storage} from "@/lib/firebase";
+import SubmitButton from "./SubmitButton";
 
 const schema = z.object({
     tweet: z.string().min(1, "Tweet content is required"),
@@ -33,6 +34,8 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
 
     const [selectedFileModal, setSelectedFileModal] = useState<File | null>(null);
     const [imagePreviewModal, setImagePreviewModal] = useState<string | null>(null);
+    const [imageRemoved, setImageRemoved] = useState(false);
+    const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
 
     useEffect(() => {
         const fetchTweet = async (id: number) => {
@@ -40,6 +43,7 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
             setValue("tweet", data.tweet);
             if (data.image) {
                 setImagePreviewModal(data.image);
+                setOriginalImageUrl(data.image);
             }
         };
 
@@ -50,15 +54,20 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
 
     const onSubmit = async (data: {tweet: string}) => {
         let imageUrl: string | null = null;
-        if (selectedFileModal) {
+
+        if (imageRemoved) {
+            imageUrl = null;
+        } else if (selectedFileModal) {
             const storageRef = ref(storage, `tweets/${selectedFileModal.name}`);
             const snapshot = await uploadBytes(storageRef, selectedFileModal);
             imageUrl = await getDownloadURL(snapshot.ref);
+        } else if (originalImageUrl) {
+            imageUrl = originalImageUrl;
         }
 
         try {
             if (id) {
-                await editTweet(Number(id), data.tweet, selectedFileModal ? imageUrl : null);
+                await editTweet(Number(id), data.tweet, imageUrl);
             } else {
                 await addTweet(data.tweet, imageUrl);
             }
@@ -78,12 +87,14 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
                 setImagePreviewModal(reader.result as string);
             };
             reader.readAsDataURL(file);
+            setImageRemoved(false);
         }
     };
 
     const handleRemoveImageModal = () => {
         setSelectedFileModal(null);
         setImagePreviewModal(null);
+        setImageRemoved(true);
     };
 
     return (
@@ -131,9 +142,11 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
                     </div>
                 )}
             </div>
-            <button type="submit" className="mt-4 bg-blue-500 text-white py-2 px-4 rounded">
-                {id ? "Edit" : "Add"} Tweet
-            </button>
+            <SubmitButton
+                onClick={handleSubmit(onSubmit)}
+                idleText={`${id ? "Edit" : "Add"} Tweet`}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+            />
         </form>
     );
 };

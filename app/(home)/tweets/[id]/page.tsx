@@ -62,7 +62,7 @@ export default async function TweetPage({params}: {params: {id: string}}) {
                 </div>
 
                 <p className="mt-4 text-2xl">{tweet.tweet}</p>
-                {tweet.image && (
+                {tweet.image ? (
                     <div className="my-4">
                         <Image
                             src={tweet.image}
@@ -71,6 +71,10 @@ export default async function TweetPage({params}: {params: {id: string}}) {
                             height={300}
                             className="rounded-lg max-h-60 w-full h-auto object-contain "
                         />
+                    </div>
+                ) : (
+                    <div className="flex justify-center items-center align-middle max-h-60">
+                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
                     </div>
                 )}
                 <p className="text-sm text-gray-500 mt-2">게시일: {new Date(tweet.created_at).toLocaleString()}</p>

@@ -7,6 +7,7 @@ import {z} from "zod";
 import {useRouter} from "next/navigation";
 import {loginAction} from "@/app/(not-home)/log-in/action";
 import Link from "next/link";
+import SubmitButton from "./SubmitButton";
 
 const schema = z.object({
     email: z.string().email("Invalid email address"),
@@ -71,12 +72,11 @@ export default function LoginForm() {
                     </div>
                     {error && <p className="text-red-500 text-xs mb-4">{error}</p>}
                     <div className="flex items-center justify-between">
-                        <button
-                            type="submit"
+                        <SubmitButton
+                            onClick={handleSubmit(onSubmit)}
+                            idleText="Log in"
                             className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                        >
-                            Log in
-                        </button>
+                        />
                         <Link className="text-sm text-blue-500 hover:text-blue-600 font-medium" href="/create-account">
                             Join us?
                         </Link>

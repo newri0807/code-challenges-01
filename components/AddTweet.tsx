@@ -34,7 +34,7 @@ async function createTweet(prevState: FormState, formData: FormData): Promise<Fo
     const imageFile = formData.get("imageFile") as File | null;
 
     let imageUrl: string | null = null;
-    if (imageFile) {
+    if (imageFile && imageFile.size > 0) {
         const storageRef = ref(storage, `tweets/${imageFile.name}`);
         const snapshot = await uploadBytes(storageRef, imageFile);
         imageUrl = await getDownloadURL(snapshot.ref);
@@ -51,7 +51,6 @@ async function createTweet(prevState: FormState, formData: FormData): Promise<Fo
         return {error: "An unexpected error occurred"};
     }
 }
-
 function SubmitButton() {
     const {pending} = useFormStatus();
 

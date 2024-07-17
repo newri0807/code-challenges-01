@@ -7,6 +7,7 @@ import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {createAccount} from "./actions";
 import Link from "next/link";
+import SubmitButton from "@/components/SubmitButton";
 
 const schema = z.object({
     email: z.string().email("Invalid email address"),
@@ -91,14 +92,11 @@ export default function CreateAccount() {
 
                     {error && <p className="text-red-500 text-sm">{error}</p>}
 
-                    <div>
-                        <button
-                            type="submit"
-                            className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                        >
-                            Create Account
-                        </button>
-                    </div>
+                    <SubmitButton
+                        onClick={handleSubmit(onSubmit)}
+                        idleText="Create Account"
+                        className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                    />
                     <div className="text-center mt-4">
                         <Link className="text-sm text-blue-500 hover:text-blue-600 font-medium" href="/log-in">
                             Already have an account? Log in
