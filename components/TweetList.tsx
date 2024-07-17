@@ -21,7 +21,7 @@ const TweetList: React.FC<TweetListProps> = async ({initialPage}) => {
             </div>
             <div className="p-4 space-y-4">
                 {tweets.map((tweet) => (
-                    <TweetItem key={tweet.id} tweet={tweet} session={session} />
+                    <TweetItem key={tweet.id} tweet={tweet} sessionId={session?.id!} />
                 ))}
             </div>
             <div className="flex justify-between items-center p-4 border-t border-gray-700">

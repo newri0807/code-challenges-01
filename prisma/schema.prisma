@@ -14,25 +14,34 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  username   String   @unique
+  id         Int        @id @default(autoincrement())
+  username   String     @unique
   password   String
-  email      String   @unique
+  email      String     @unique
   bio        String?
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  avatar     String?
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
   tweets     Tweet[]
   likes      Like[]
+  responses  Response[]
+  Retweet    Retweet[]
+  followers  Follow[]   @relation("followers")
+  following  Follow[]   @relation("following")
 }
 
 model Tweet {
-  id         Int      @id @default(autoincrement())
+  id         Int        @id @default(autoincrement())
   tweet      String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  image      String?
+  created_at DateTime   @default(now())
+  updated_at DateTime   @updatedAt
   userId     Int
-  user       User     @relation(fields: [userId], references: [id])
+  user       User       @relation(fields: [userId], references: [id])
   likes      Like[]
+  responses  Response[]
+  views      Int        @default(0)
+  retweets   Retweet[]
 }
 
 model Like {
@@ -44,4 +53,37 @@ model Like {
   tweet      Tweet    @relation(fields: [tweetId], references: [id])
 
   @@unique([userId, tweetId])
+}
+
+model Response {
+  id         Int      @id @default(autoincrement())
+  content    String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  userId     Int
+  tweetId    Int
+  user       User     @relation(fields: [userId], references: [id])
+  tweet      Tweet    @relation(fields: [tweetId], references: [id])
+}
+
+model Retweet {
+  id         Int      @id @default(autoincrement())
+  created_at DateTime @default(now())
+  userId     Int
+  tweetId    Int
+  user       User     @relation(fields: [userId], references: [id])
+  tweet      Tweet    @relation(fields: [tweetId], references: [id])
+
+  @@unique([userId, tweetId])
+}
+
+model Follow {
+  id          Int      @id @default(autoincrement())
+  created_at  DateTime @default(now())
+  followerId  Int
+  followingId Int
+  follower    User     @relation("followers", fields: [followerId], references: [id])
+  following   User     @relation("following", fields: [followingId], references: [id])
+
+  @@unique([followerId, followingId])
 }

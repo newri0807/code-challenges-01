@@ -4,7 +4,7 @@ import React, {useState, useRef, useEffect} from "react";
 import {EllipsisHorizontalIcon} from "@heroicons/react/24/outline";
 import Modal from "./Modal";
 import TweetForm from "./TweetForm";
-import {deleteTweet} from "@/app/(home)/tweets/actions";
+import {deleteTweet} from "@/app/(home)/tweets/[id]/actions";
 import {useRouter} from "next/navigation";
 
 interface TweetActionsProps {

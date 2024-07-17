@@ -3,8 +3,12 @@
 import React, {useState, useCallback} from "react";
 import {useFormState, useFormStatus} from "react-dom";
 import {z} from "zod";
-import {addTweet} from "@/app/(home)/tweets/actions";
 import {useRouter} from "next/navigation";
+import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
+import Image from "next/image";
+import {DocumentArrowUpIcon, XMarkIcon} from "@heroicons/react/24/outline";
+import {storage} from "@/lib/firebase";
+import {addTweet} from "@/app/(home)/tweets/[id]/actions";
 
 const tweetSchema = z.object({
     tweet: z.string().min(1, "Tweet cannot be empty").max(280, "Tweet is too long"),
@@ -19,6 +23,7 @@ type FormState = {
         created_at: Date;
         updated_at: Date;
         userId: number;
+        image?: string | null;
     };
 };
 
@@ -26,10 +31,18 @@ const initialState: FormState = {};
 
 async function createTweet(prevState: FormState, formData: FormData): Promise<FormState> {
     const tweet = formData.get("tweet") as string;
+    const imageFile = formData.get("imageFile") as File | null;
+
+    let imageUrl: string | null = null;
+    if (imageFile) {
+        const storageRef = ref(storage, `tweets/${imageFile.name}`);
+        const snapshot = await uploadBytes(storageRef, imageFile);
+        imageUrl = await getDownloadURL(snapshot.ref);
+    }
 
     try {
         const validatedData = tweetSchema.parse({tweet});
-        const newTweet = await addTweet(validatedData.tweet);
+        const newTweet = await addTweet(validatedData.tweet, imageUrl);
         return {message: "Tweet created successfully", tweet: newTweet};
     } catch (error) {
         if (error instanceof z.ZodError) {
@@ -56,16 +69,37 @@ function SubmitButton() {
 export default function AddTweet() {
     const [state, formAction] = useFormState(createTweet, initialState);
     const [tweetContent, setTweetContent] = useState("");
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [imagePreview, setImagePreview] = useState<string | null>(null);
     const router = useRouter();
 
     const handleSubmit = useCallback(
         (formData: FormData) => {
             formAction(formData);
             setTweetContent(""); // Clear the input after submission
+            setSelectedFile(null); // Clear the selected file after submission
+            setImagePreview(null); // Clear the image preview after submission
             router.refresh(); // Refresh the page to show the new tweet
         },
         [formAction, router]
     );
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const file = e.target.files?.[0];
+        if (file) {
+            setSelectedFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setImagePreview(reader.result as string);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
+
+    const handleRemoveImage = () => {
+        setSelectedFile(null);
+        setImagePreview(null);
+    };
 
     const remainingChars = 280 - tweetContent.length;
     const isOverLimit = remainingChars < 0;
@@ -84,6 +118,37 @@ export default function AddTweet() {
                         value={tweetContent}
                         onChange={(e) => setTweetContent(e.target.value)}
                     />
+                </div>
+                <div className="mb-4">
+                    <div className="flex items-center space-x-2">
+                        <input type="file" id="imageFile" name="imageFile" accept="image/*" className="hidden" onChange={handleFileChange} />
+                        <label
+                            htmlFor="imageFile"
+                            className="cursor-pointer bg-gray-700 hover:bg-gray-800 text-gray-200 px-2 py-2 rounded-full flex items-center space-x-2"
+                        >
+                            <DocumentArrowUpIcon className="h-6 w-6 text-gray-400" />
+                        </label>
+                        {imagePreview && (
+                            <button
+                                type="button"
+                                className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-2 rounded-full"
+                                onClick={handleRemoveImage}
+                            >
+                                <XMarkIcon className="h-5 w-5" />
+                            </button>
+                        )}
+                    </div>
+                    {imagePreview && (
+                        <div className="mt-4">
+                            <Image
+                                src={imagePreview}
+                                alt="Image preview"
+                                width={400}
+                                height={300}
+                                className="rounded-lg max-h-60 w-full h-auto object-contain"
+                            />
+                        </div>
+                    )}
                 </div>
                 <div className="flex items-center justify-between">
                     <span className={`text-sm ${isOverLimit ? "text-red-500" : "text-gray-600"}`}>{remainingChars} characters remaining</span>

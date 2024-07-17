@@ -2,28 +2,30 @@ import getSession from "@/lib/session";
 import {notFound, redirect} from "next/navigation";
 import db from "@/lib/db";
 import Image from "next/image";
-import Link from "next/link";
+import EditProfileModal from "@/components/EditProfileModal";
+import FollowStatus from "@/components/FollowStatus";
 
-async function getUser() {
-    const session = await getSession();
+async function getUser(userId: number) {
+    const user = await db.user.findUnique({
+        where: {
+            id: userId,
+        },
+    });
 
-    console.log(session.id, "session----------");
-    if (session?.id) {
-        const user = await db.user.findUnique({
-            where: {
-                id: session.id,
-            },
-        });
-
-        if (user) {
-            return user;
-        }
+    if (user) {
+        return user;
     }
     notFound();
 }
 
-export default async function ProfilePage() {
-    const user = await getUser();
+interface ProfilePageProps {
+    params: {id: string};
+}
+
+export default async function ProfilePage({params}: ProfilePageProps) {
+    const session = await getSession();
+    const userId = Number(params.id);
+    const user = await getUser(userId);
 
     const logOut = async () => {
         "use server";
@@ -31,6 +33,8 @@ export default async function ProfilePage() {
         await session.destroy();
         redirect("/");
     };
+
+    if (!user) return null;
 
     return (
         <div className="bg-black text-white min-h-screen w-full">
@@ -47,13 +51,13 @@ export default async function ProfilePage() {
                 {/* Avatar and Edit Button */}
                 <div className="relative flex justify-between items-end px-4 -mt-16">
                     <Image
-                        src={"/default-avatar.png"}
+                        src={user.avatar || "/default-avatar.png"}
                         alt={user.username}
                         width={112}
                         height={112}
-                        className="w-28 h-28 rounded-full border-4 border-black"
+                        className="w-28 h-28 rounded-full border-4 border-black bg-white"
                     />
-                    <button className="bg-black text-white px-4 py-2 rounded-full border border-gray-600 font-bold">프로필 수정</button>
+                    {session?.id === userId && <EditProfileModal user={user} />}
                 </div>
 
                 {/* User Info */}
@@ -82,24 +86,21 @@ export default async function ProfilePage() {
                     </div>
 
                     <div className="mt-4 flex space-x-4">
-                        <span className="text-gray-300">
-                            <strong className="text-white">0</strong> 팔로잉
-                        </span>
-                        <span className="text-gray-300">
-                            <strong className="text-white">0</strong> 팔로워
-                        </span>
+                        <FollowStatus userId={userId} currentUserId={session?.id!} />
                     </div>
                 </div>
             </div>
 
             {/* Logout Button */}
-            <div className="p-4">
-                <form action={logOut}>
-                    <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">
-                        log out
-                    </button>
-                </form>
-            </div>
+            {session?.id === userId && (
+                <div className="p-4">
+                    <form action={logOut}>
+                        <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">
+                            log out
+                        </button>
+                    </form>
+                </div>
+            )}
         </div>
     );
 }

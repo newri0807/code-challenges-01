@@ -1,9 +1,10 @@
+import React from "react";
 import {notFound} from "next/navigation";
 import Link from "next/link";
 import db from "@/lib/db";
 import {ArrowLeftIcon} from "@heroicons/react/24/solid";
 import Image from "next/image";
-import {ArrowPathRoundedSquareIcon, ChatBubbleLeftIcon, EyeIcon, HeartIcon} from "@heroicons/react/24/outline";
+import {ArrowPathRoundedSquareIcon} from "@heroicons/react/24/outline";
 import {
     ArrowPathRoundedSquareIcon as FullArrowPathRoundedSquareIcon,
     ChatBubbleLeftIcon as FullChatBubbleLeftIcon,
@@ -14,11 +15,16 @@ import TweetForm from "@/components/TweetForm";
 import Modal from "@/components/Modal";
 import getSession from "@/lib/session";
 import PopupTweetActions from "@/components/PopupTweetActions";
+import {LikeButton} from "@/components/LikeButton";
+import {ResponsePage} from "@/components/ResponsePage";
+import {ViewCount} from "@/components/ViewCount";
+import {CommentCount} from "@/components/CommentCount";
+import {RetweetButton} from "@/components/RetweetButton";
 
 export default async function TweetPage({params}: {params: {id: string}}) {
     const tweet = await db.tweet.findUnique({
         where: {id: Number(params.id)},
-        include: {user: true},
+        include: {user: true, responses: {include: {user: true}}, likes: true, retweets: true},
     });
 
     if (!tweet) {
@@ -38,43 +44,52 @@ export default async function TweetPage({params}: {params: {id: string}}) {
                 </Link>
             </div>
             <div className="border-b border-gray-700 pb-4 mb-4 p-4">
-                 <div className="flex w-full justify-between item-center">
-<div className="flex items-center space-x-4">
-                    <Image
-                        src={"/default-avatar.png"}
-                        alt={tweet.user.username}
-                        width={56}
-                        height={56}
-                        className="rounded-full border-2 border-gray-700"
-                    />
-                    <p className="font-semibold text-xl">{tweet.user.username}</p>
+                <div className="flex w-full justify-between item-center">
+                    <div className="flex items-center space-x-4">
+                        <Link href={`/profile/${tweet.user.id}`}>
+                            <Image
+                                src={tweet.user.avatar || "/default-avatar.png"}
+                                alt={tweet.user.username}
+                                width={56}
+                                height={56}
+                                className="rounded-full border-2 border-gray-700 bg-white"
+                            />
+                        </Link>
+                        <p className="font-semibold text-xl">{tweet.user.username}</p>
+                    </div>
+
+                    {isOwner && <PopupTweetActions tweetId={tweet.id} />}
                 </div>
 
-                {isOwner && <PopupTweetActions tweetId={tweet.id} />}
-
-                 </div>
-                
                 <p className="mt-4 text-2xl">{tweet.tweet}</p>
+                {tweet.image && (
+                    <div className="my-4">
+                        <Image
+                            src={tweet.image}
+                            alt="Tweet image"
+                            width={400}
+                            height={300}
+                            className="rounded-lg max-h-60 w-full h-auto object-contain "
+                        />
+                    </div>
+                )}
                 <p className="text-sm text-gray-500 mt-2">게시일: {new Date(tweet.created_at).toLocaleString()}</p>
             </div>
             <div className="flex justify-between pb-4 px-4 border-b border-gray-700">
                 <div className="flex items-center justify-center space-x-2 group hover:text-blue-500 cursor-pointer">
-                    <ChatBubbleLeftIcon className="w-6 h-6 text-gray-400 group-hover:text-blue-500" />
-                    <span className="text-md font-bold">댓글</span>
+                    <CommentCount tweetId={tweet.id} />
                 </div>
                 <div className="flex items-center justify-center space-x-2 group hover:text-green-500">
-                    <ArrowPathRoundedSquareIcon className="w-6 h-6 text-gray-400 group-hover:text-green-500 cursor-pointer" />
-                    <span className="text-md font-bold">리트윗</span>
+                    <RetweetButton tweetId={tweet.id} />
                 </div>
                 <div className="flex items-center justify-center space-x-2 group hover:text-red-500 cursor-pointer">
-                    <HeartIcon className="w-6 h-6 text-gray-400 group-hover:text-red-500" />
-                    <span className="text-md font-bold">좋아요</span>
+                    <LikeButton tweetId={tweet.id} />
                 </div>
                 <div className="flex items-center justify-center space-x-2 group hover:text-yellow-500 cursor-pointer">
-                    <EyeIcon className="w-6 h-6 text-gray-400 group-hover:text-yellow-500" />
-                    <span className="text-md font-bold">조회수</span>
+                    <ViewCount tweetId={tweet.id} />
                 </div>
             </div>
+            <ResponsePage initialResponses={tweet.responses} sessionUserId={session!.id!} tweetId={tweet.id} isOwner={isOwner} />
         </div>
     );
 }

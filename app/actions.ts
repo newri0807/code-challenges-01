@@ -8,7 +8,7 @@ export async function getTweets(page: number, limit: number) {
             skip,
             take: limit,
             orderBy: {created_at: "desc"},
-            include: {user: true},
+            include: {user: true, responses: {include: {user: true}}, likes: true},
         }),
         db.tweet.count(),
     ]);

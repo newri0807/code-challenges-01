@@ -1,7 +1,8 @@
 import {EllipsisHorizontalIcon, HomeIcon, MagnifyingGlassIcon, UserIcon} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React from "react";
-import AddTweetButton from './AddTweetButton';
+import AddTweetButton from "./AddTweetButton";
+import getSession from "@/lib/session";
 
 interface NavItemProps {
     icon: React.ReactNode;
@@ -17,7 +18,9 @@ const NavItem: React.FC<NavItemProps> = ({icon, label, href, active = false}) =>
     </Link>
 );
 
-export default function LeftSidebar() {
+export default async function LeftSidebar() {
+    const session = await getSession();
+
     return (
         <div className="w-64 border-r border-gray-700 p-4">
             <nav className="space-y-4">
@@ -27,10 +30,10 @@ export default function LeftSidebar() {
                 {/* <NavItem icon={<Bell className="h-6 w-6" />} label="알림" href="/notifications" active />
                 <NavItem icon={<Mail className="h-6 w-6" />} label="쪽지" href="/messages" />
                 <NavItem icon={<Bookmark className="h-6 w-6" />} label="북마크" href="/bookmarks" /> */}
-                <NavItem icon={<UserIcon className="h-6 w-6" />} label="프로필" href="/profile" />
+                <NavItem icon={<UserIcon className="h-6 w-6" />} label="프로필" href={`/profile/${session.id!}`} />
                 <NavItem icon={<EllipsisHorizontalIcon className="h-6 w-6" />} label="더 보기" href="/more" />
             </nav>
-           <AddTweetButton />
+            <AddTweetButton />
         </div>
     );
 }
