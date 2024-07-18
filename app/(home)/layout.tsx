@@ -18,7 +18,7 @@ export default function RootLayout({
                 <LeftSidebar />
             </div>
             <main className="flex-1 min-h-screen border-x border-gray-800 relative">
-                <div className="max-w-2xl mx-auto pb-16 md:pb-0">{children}</div>
+                <div className="mx-auto pb-16 md:pb-0">{children}</div>
                 <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800">
                     <MobileBottomNav />
                 </div>
