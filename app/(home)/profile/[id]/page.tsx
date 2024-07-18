@@ -4,18 +4,32 @@ import db from "@/lib/db";
 import Image from "next/image";
 import EditProfileModal from "@/components/EditProfileModal";
 import FollowStatus from "@/components/FollowStatus";
+import TweetItem from "@/components/TweetItem"; // TweetItem 컴포넌트 import
+import Link from "next/link";
 
 async function getUser(userId: number) {
     const user = await db.user.findUnique({
-        where: {
-            id: userId,
-        },
+        where: {id: userId},
     });
 
     if (user) {
         return user;
     }
     notFound();
+}
+
+async function getUserTweets(userId: number) {
+    const tweets = await db.tweet.findMany({
+        where: {userId: userId},
+        include: {
+            user: true,
+            likes: true,
+            retweets: true,
+        },
+        orderBy: {created_at: "desc"},
+    });
+
+    return tweets;
 }
 
 interface ProfilePageProps {
@@ -26,6 +40,7 @@ export default async function ProfilePage({params}: ProfilePageProps) {
     const session = await getSession();
     const userId = Number(params.id);
     const user = await getUser(userId);
+    const tweets = await getUserTweets(userId);
 
     const logOut = async () => {
         "use server";
@@ -39,25 +54,42 @@ export default async function ProfilePage({params}: ProfilePageProps) {
     return (
         <div className="bg-black text-white min-h-screen w-full">
             {/* Header */}
-            <div className="border-b border-gray-700 p-4">
-                <h1 className="text-xl font-bold">프로필</h1>
-            </div>
+            <header className="sticky top-0 z-10 bg-black bg-opacity-80 backdrop-blur-md border-b border-gray-800 p-4 flex items-center">
+                <Link href="/" className="mr-4">
+                    <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        strokeWidth={1.5}
+                        stroke="currentColor"
+                        className="w-6 h-6"
+                    >
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
+                    </svg>
+                </Link>
+                <div>
+                    <h1 className="text-xl font-bold">{user.username}</h1>
+                    <p className="text-sm text-gray-500">{tweets.length} 트윗</p>
+                </div>
+            </header>
 
             {/* Profile Content */}
-            <div className="p-4">
+            <div>
                 {/* Banner Image */}
-                <div className="h-32 bg-blue-500 rounded-t-xl"></div>
+                <div className="h-48 bg-gray-800"></div>
 
                 {/* Avatar and Edit Button */}
-                <div className="relative flex justify-between items-end px-4 -mt-16">
+                <div className="relative px-4">
                     <Image
                         src={user.avatar || "/default-avatar.png"}
                         alt={user.username}
-                        width={112}
-                        height={112}
-                        className="w-28 h-28 rounded-full border-4 border-black bg-white"
+                        width={134}
+                        height={134}
+                        className="absolute -top-16 w-32 h-32 rounded-full border-4 border-black bg-black"
                     />
-                    {session?.id === userId && <EditProfileModal user={user} />}
+                    <div className="flex justify-end pt-4">
+                        {session?.id === userId ? <EditProfileModal user={user} /> : <FollowStatus userId={userId} currentUserId={session?.id!} />}
+                    </div>
                 </div>
 
                 {/* User Info */}
@@ -85,22 +117,33 @@ export default async function ProfilePage({params}: ProfilePageProps) {
                         {user.email}
                     </div>
 
-                    <div className="mt-4 flex space-x-4">
-                        <FollowStatus userId={userId} currentUserId={session?.id!} />
-                    </div>
+                    {/* Logout Button */}
+                    {session?.id === userId && (
+                        <div className="mt-4">
+                            <form action={logOut}>
+                                <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">
+                                    로그아웃
+                                </button>
+                            </form>
+                        </div>
+                    )}
                 </div>
             </div>
 
-            {/* Logout Button */}
-            {session?.id === userId && (
-                <div className="p-4">
-                    <form action={logOut}>
-                        <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">
-                            log out
-                        </button>
-                    </form>
-                </div>
-            )}
+            {/* User's Tweets */}
+            <div className="mt-4 border-t border-gray-800">
+                {tweets.length > 0 ? (
+                    <div>
+                        {tweets.map((tweet) => (
+                            <div key={tweet.id} className="border-b border-gray-800 p-4 hover:bg-gray-900 transition duration-200 ease-in-out">
+                                <TweetItem tweet={tweet} sessionId={session?.id!} />
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="text-gray-500 p-4">아직 트윗이 없습니다.</p>
+                )}
+            </div>
         </div>
     );
 }

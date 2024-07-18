@@ -1,5 +1,6 @@
 import type {Metadata} from "next";
 import LeftSidebar from "@/components/LeftSidebar";
+import MobileBottomNav from "@/components/MoblieBottomNav";
 
 export const metadata: Metadata = {
     title: "clone tweeter Next App",
@@ -12,9 +13,16 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <div className="flex h-full">
-            <LeftSidebar />
-            {children}
+        <div className="flex h-full bg-black text-white">
+            <div className="hidden md:block w-64 border-r border-gray-700">
+                <LeftSidebar />
+            </div>
+            <main className="flex-1 min-h-screen border-x border-gray-800 relative">
+                <div className="max-w-2xl mx-auto pb-16 md:pb-0">{children}</div>
+                <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800">
+                    <MobileBottomNav />
+                </div>
+            </main>
         </div>
     );
 }

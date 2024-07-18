@@ -58,7 +58,7 @@ export async function toggleFollow(followerId: number, followingId: number) {
         await followUser(followerId, followingId);
     }
 
-    revalidatePath(`/profile/${followingId}`);
+    //revalidatePath(`/profile/${followingId}`);
     return !isAlreadyFollowing;
 }
 

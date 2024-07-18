@@ -20,22 +20,17 @@ export function RetweetButton({tweetId}: RetweetButtonProps) {
         serverRetweetState,
         (state: RetweetState, newState: Partial<RetweetState>) => ({...state, ...newState})
     );
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        setIsLoading(true);
         getRetweetStatus(tweetId)
             .then((status) => {
                 setServerRetweetState(status);
-                setIsLoading(false);
+                addOptimisticRetweetState(status);
             })
             .catch((err) => {
                 console.error("Error fetching retweet status:", err);
-                setError("Failed to load retweet status");
-                setIsLoading(false);
             });
-    }, [tweetId]);
+    }, [tweetId, addOptimisticRetweetState]);
 
     const handleRetweet = useCallback(async () => {
         const optimisticUpdate = {
@@ -49,14 +44,9 @@ export function RetweetButton({tweetId}: RetweetButtonProps) {
             setServerRetweetState(result);
         } catch (err) {
             console.error("Error toggling retweet:", err);
-            setError("Failed to retweet");
-            // Revert to the server state if there's an error
             addOptimisticRetweetState(serverRetweetState);
         }
     }, [tweetId, optimisticRetweetState, addOptimisticRetweetState, serverRetweetState]);
-
-    if (isLoading) return <div>Loading...</div>;
-    if (error) return <div className="text-red-500">{error}</div>;
 
     return (
         <div className="flex items-center justify-center space-x-2 group hover:text-green-500 cursor-pointer" onClick={handleRetweet}>

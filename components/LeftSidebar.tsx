@@ -26,7 +26,7 @@ export default async function LeftSidebar() {
             <nav className="space-y-4">
                 <div className="text-2xl font-bold mb-6">🖤</div>
                 <NavItem icon={<HomeIcon className="h-6 w-6" />} label="홈" href="/" />
-                <NavItem icon={<MagnifyingGlassIcon className="h-6 w-6" />} label="탐색하기" href="/explore" />
+                <NavItem icon={<MagnifyingGlassIcon className="h-6 w-6" />} label="검색하기" href="/explore" />
                 {/* <NavItem icon={<Bell className="h-6 w-6" />} label="알림" href="/notifications" active />
                 <NavItem icon={<Mail className="h-6 w-6" />} label="쪽지" href="/messages" />
                 <NavItem icon={<Bookmark className="h-6 w-6" />} label="북마크" href="/bookmarks" /> */}

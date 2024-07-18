@@ -3,8 +3,7 @@
 import React, {useCallback, useEffect, useOptimistic, useState} from "react";
 import {HeartIcon as OutlineHeartIcon} from "@heroicons/react/24/outline";
 import {HeartIcon as SolidHeartIcon} from "@heroicons/react/24/solid";
-import { getLikeStatus, toggleLike } from '@/app/(home)/tweets/[id]/actions';
-
+import {getLikeStatus, toggleLike} from "@/app/(home)/tweets/[id]/actions";
 
 type LikeButtonProps = {
     tweetId: number;
@@ -21,20 +20,16 @@ export function LikeButton({tweetId}: LikeButtonProps) {
         ...state,
         ...newState,
     }));
-    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
     useEffect(() => {
-        setIsLoading(true);
         getLikeStatus(tweetId)
             .then((status) => {
                 setServerLikeState(status);
-                setIsLoading(false);
             })
             .catch((err) => {
                 console.error("Error fetching like status:", err);
                 setError("Failed to load like status");
-                setIsLoading(false);
             });
     }, [tweetId]);
 
@@ -51,12 +46,10 @@ export function LikeButton({tweetId}: LikeButtonProps) {
         } catch (err) {
             console.error("Error toggling like:", err);
             setError("Failed to update like");
-            // Revert to the server state if there's an error
             addOptimisticLikeState(serverLikeState);
         }
     }, [tweetId, optimisticLikeState, addOptimisticLikeState, serverLikeState]);
 
-    if (isLoading) return <div>Loading...</div>;
     if (error) return <div className="text-red-500">{error}</div>;
 
     return (
