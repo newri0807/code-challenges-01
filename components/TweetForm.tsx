@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from "react";
+import React, {useEffect, useState, useCallback, useRef} from "react";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -36,6 +36,12 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id, initialData}) => {
     const [selectedFileModal, setSelectedFileModal] = useState<File | null>(null);
     const [imagePreviewModal, setImagePreviewModal] = useState<string | null>(initialData?.image || null);
     const [imageRemoved, setImageRemoved] = useState(false);
+
+    const fileInputRef = useRef<HTMLInputElement>(null);
+
+    const handleImageButtonClick = () => {
+        fileInputRef.current?.click();
+    };
 
     const fetchTweet = useCallback(
         async (tweetId: number) => {
@@ -110,7 +116,7 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id, initialData}) => {
                 <label>Tweet</label>
                 <textarea
                     {...register("tweet")}
-                    className={`w-full p-2 border text-black ${isLoading ? "bg-gray-100" : ""}`}
+                    className={`w-full p-2 border text-black ${isLoading ? "bg-gray-100 cursor-not-allowed" : ""}`}
                     disabled={isLoading}
                     placeholder={isLoading ? "Loading..." : "What's happening?"}
                 />
@@ -120,6 +126,7 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id, initialData}) => {
                 <div className="flex items-center justify-between space-x-2">
                     <div className="flex gap-2">
                         <input
+                            ref={fileInputRef}
                             type="file"
                             id="imageFileModal"
                             name="imageFileModal"
@@ -128,20 +135,20 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id, initialData}) => {
                             onChange={handleFileChangeModal}
                             disabled={isLoading}
                         />
-                        <label
-                            htmlFor="imageFileModal"
-                            className={`pixel-button cursor-pointer bg-gray-700 !hover:bg-gray-900 text-gray-200 px-2 py-2 rounded-full flex items-center space-x-2 ${
-                                isLoading ? "opacity-50 cursor-not-allowed" : ""
-                            }`}
+                        <button
+                            type="button"
+                            onClick={handleImageButtonClick}
+                            className={`pixel-button bg-gray-700 text-gray-200 px-2 py-2 rounded-full flex items-center space-x-2 
+                                ${isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-900"}`}
+                            disabled={isLoading}
                         >
                             <DocumentArrowUpIcon className="h-6 w-6 text-gray-400" />
-                        </label>
+                        </button>
                         {imagePreviewModal && (
                             <button
                                 type="button"
-                                className={`pixel-button bg-gray-700 !hover:bg-gray-900 text-white font-bold py-2 px-2 rounded-full ${
-                                    isLoading ? "opacity-50 cursor-not-allowed" : ""
-                                }`}
+                                className={`pixel-button bg-gray-700 text-white font-bold py-2 px-2 rounded-full 
+                                             ${isLoading ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-900"}`}
                                 onClick={handleRemoveImageModal}
                                 disabled={isLoading}
                             >

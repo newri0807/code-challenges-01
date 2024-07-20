@@ -85,10 +85,11 @@ export default async function ProfilePage({params}: ProfilePageProps) {
                         alt={user.username}
                         width={134}
                         height={134}
-                        className="absolute -top-16 w-32 h-32 rounded-full border-4 !pixel-border-b border-black bg-black"
+                        className="absolute -top-16 w-32 h-32 rounded-full border-4 !pixel-border-b border-black bg-white"
                     />
-                    <div className="flex justify-end pt-4">
-                        {session?.id === userId ? <EditProfileModal user={user} /> : <FollowStatus userId={userId} currentUserId={session?.id!} />}
+                    <div className="flex justify-end pt-4 gap-2 item-center">
+                        <FollowStatus userId={userId} currentUserId={session?.id!} />
+                        {session?.id === userId && <EditProfileModal user={user} />}
                     </div>
                 </div>
 

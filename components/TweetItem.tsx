@@ -74,7 +74,7 @@ const TweetItem: React.FC<TweetItemProps> = ({tweet, sessionId}) => {
                             alt={tweet.user.id.toString()}
                             width={112}
                             height={112}
-                            className="w-12 h-12 rounded-full border-4 !pixel-border-b border-black bg-white"
+                            className="w-12 h-12 rounded-full border-2 !pixel-border-b border-black bg-white"
                             onClick={(event: React.MouseEvent) => {
                                 event.stopPropagation();
                                 router.push(`/profile/${tweet.user.id}`);

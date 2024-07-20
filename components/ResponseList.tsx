@@ -15,13 +15,13 @@ export const ResponseList: React.FC<ResponseListProps> = React.memo(({responses,
     return (
         <div className="p-4">
             {responses.map((response) => (
-                <div key={response.id} className="!pixel-border-b border-b border-gray-800 py-4 flex items-start last:border-none">
+                <div key={response.id} className="!pixel-border-b  border-gray-800 py-4 flex items-start last:border-none">
                     <Image
                         src={response.user.avatar || "/default-avatar.png"}
                         alt={response.user.username}
                         width={40}
                         height={40}
-                        className="rounded-full mr-4 bg-white"
+                        className="bg-white rounded-full mx-2"
                     />
                     <div className="flex-1">
                         <div className="flex items-center justify-between">

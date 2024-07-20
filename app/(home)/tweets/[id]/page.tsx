@@ -27,6 +27,7 @@ export default async function TweetPage({params}: {params: {id: string}}) {
         include: {user: true, responses: {include: {user: true}}, likes: true, retweets: true},
     });
 
+    console.log(tweet);
     if (!tweet) {
         notFound();
     }
@@ -52,7 +53,7 @@ export default async function TweetPage({params}: {params: {id: string}}) {
                                 alt={tweet.user.username}
                                 width={56}
                                 height={56}
-                                className="rounded-full border-2 border-gray-700 bg-white"
+                                className="border-2 !pixel-border-b border-black bg-white rounded-full"
                             />
                         </Link>
                         <p className="font-semibold text-xl">{tweet.user.username}</p>
@@ -62,19 +63,15 @@ export default async function TweetPage({params}: {params: {id: string}}) {
                 </div>
 
                 <p className="mt-4 text-2xl">{tweet.tweet}</p>
-                {tweet.image ? (
+                {tweet.image && (
                     <div className="my-4">
                         <Image
                             src={tweet.image}
                             alt="Tweet image"
                             width={400}
                             height={300}
-                            className="rounded-lg max-h-60 w-full h-auto object-contain "
+                            className="rounded-lg max-h-60 w-full h-auto object-contain"
                         />
-                    </div>
-                ) : (
-                    <div className="flex justify-center items-center align-middle max-h-60">
-                        <div className="animate-spin rounded-full h-12 w-12 !pixel-border-t  border-t-2 !pixel-border-b border-b-2 !pixel-border-b border-blue-500"></div>
                     </div>
                 )}
                 <p className="text-sm text-gray-500 mt-2">게시일: {new Date(tweet.created_at).toLocaleString()}</p>
