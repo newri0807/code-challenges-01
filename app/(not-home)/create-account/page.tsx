@@ -57,7 +57,7 @@ export default function CreateAccount() {
                                 id="email"
                                 type="email"
                                 {...register("email")}
-                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-t  border-transparent"
+                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none  focus:border-t  border-transparent"
                                 placeholder="Email address"
                             />
                             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -70,7 +70,7 @@ export default function CreateAccount() {
                                 id="password"
                                 type="password"
                                 {...register("password")}
-                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-t  border-transparent"
+                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none  focus:border-t  border-transparent"
                                 placeholder="Password"
                             />
                             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
@@ -83,7 +83,7 @@ export default function CreateAccount() {
                                 id="username"
                                 type="text"
                                 {...register("username")}
-                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-t  border-transparent"
+                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none  focus:border-t  border-transparent"
                                 placeholder="Name"
                             />
                             {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>}
