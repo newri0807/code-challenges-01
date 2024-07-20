@@ -34,3 +34,98 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+```
+code-challenges-01
+├─ .eslintrc.json
+├─ app
+│  ├─ (home)
+│  │  ├─ explore
+│  │  │  ├─ actions.ts
+│  │  │  └─ page.tsx
+│  │  ├─ layout.tsx
+│  │  ├─ page.tsx
+│  │  ├─ profile
+│  │  │  └─ [id]
+│  │  │     ├─ actions.ts
+│  │  │     └─ page.tsx
+│  │  └─ tweets
+│  │     └─ [id]
+│  │        ├─ actions.ts
+│  │        └─ page.tsx
+│  ├─ (not-home)
+│  │  ├─ create-account
+│  │  │  ├─ actions.ts
+│  │  │  └─ page.tsx
+│  │  ├─ layout.tsx
+│  │  └─ log-in
+│  │     ├─ action.ts
+│  │     └─ page.tsx
+│  ├─ actions.ts
+│  ├─ favicon.ico
+│  ├─ fonts
+│  │  ├─ DungGeunMo.ttf
+│  │  └─ neodgm.ttf
+│  ├─ globals.css
+│  ├─ layout.tsx
+│  └─ loading.tsx
+├─ components
+│  ├─ AddTweet.tsx
+│  ├─ AddTweetButton.tsx
+│  ├─ CommentCount.tsx
+│  ├─ EditProfileModal.tsx
+│  ├─ FollowStatus.tsx
+│  ├─ LeftSidebar.tsx
+│  ├─ LikeButton.tsx
+│  ├─ LoadingSpinner.tsx
+│  ├─ LoginForm.tsx
+│  ├─ MobileAddButton.tsx
+│  ├─ MoblieBottomNav.tsx
+│  ├─ Modal.tsx
+│  ├─ MoreButton.tsx
+│  ├─ PopupTweetActions.tsx
+│  ├─ ResponseForm.tsx
+│  ├─ ResponseList.tsx
+│  ├─ ResponsePage.tsx
+│  ├─ RetweetButton.tsx
+│  ├─ SubmitButton.tsx
+│  ├─ SuccessMessage.tsx
+│  ├─ TweetForm.tsx
+│  ├─ TweetItem.tsx
+│  ├─ TweetList.tsx
+│  └─ ViewCount.tsx
+├─ hooks
+│  ├─ useDebounce.ts
+│  └─ useResponseState.ts
+├─ lib
+│  ├─ auth.ts
+│  ├─ db.ts
+│  ├─ firebase.ts
+│  ├─ session.ts
+│  └─ type.ts
+├─ middleware.ts
+├─ next.config.mjs
+├─ package-lock.json
+├─ package.json
+├─ postcss.config.mjs
+├─ prisma
+│  ├─ migrations
+│  │  ├─ 20240717080233_add_change_to_postgre_sql
+│  │  │  └─ migration.sql
+│  │  ├─ 20240717082558_add_1st
+│  │  │  └─ migration.sql
+│  │  └─ migration_lock.toml
+│  └─ schema.prisma
+├─ public
+│  ├─ default-avatar.png
+│  ├─ login_bg.gif
+│  ├─ logo0.png
+│  ├─ next.svg
+│  └─ vercel.svg
+├─ README.md
+├─ store
+│  └─ TweetStore.ts
+├─ tailwind.config.ts
+└─ tsconfig.json
+
+```
