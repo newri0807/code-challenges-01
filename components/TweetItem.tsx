@@ -34,11 +34,17 @@ const TweetItem: React.FC<TweetItemProps> = ({tweet, sessionId}) => {
     const router = useRouter();
     const [isImageLoading, setIsImageLoading] = useState(false);
     const [showImage, setShowImage] = useState(false);
+    const [imageError, setImageError] = useState(false);
 
     useEffect(() => {
-        if (typeof tweet.image === "string" && tweet.image.trim() !== "") {
+        if (tweet.image && typeof tweet.image === "string" && tweet.image.trim() !== "") {
             setShowImage(true);
             setIsImageLoading(true);
+            setImageError(false);
+        } else {
+            setShowImage(false);
+            setIsImageLoading(false);
+            setImageError(false);
         }
     }, [tweet.image]);
 
@@ -53,11 +59,14 @@ const TweetItem: React.FC<TweetItemProps> = ({tweet, sessionId}) => {
         event.stopPropagation();
     };
 
-    console.log(tweet.id, tweet.image);
+    const handleImageError = () => {
+        setIsImageLoading(false);
+        setImageError(true);
+    };
 
     return (
         <div className="relative">
-            <div onClick={handleTweetClick} className="border border-gray-700 rounded-lg p-4 hover:bg-gray-900 transition cursor-pointer">
+            <div onClick={handleTweetClick} className="!pixel-border border border-gray-700 p-4 hover:bg-gray-900 transition cursor-pointer">
                 <div className="flex w-full justify-between items-center">
                     <div className="flex items-start space-x-3">
                         <Image
@@ -65,7 +74,7 @@ const TweetItem: React.FC<TweetItemProps> = ({tweet, sessionId}) => {
                             alt={tweet.user.id.toString()}
                             width={112}
                             height={112}
-                            className="w-12 h-12 rounded-full border-4 border-black bg-white"
+                            className="w-12 h-12 rounded-full border-4 !pixel-border-b border-black bg-white"
                             onClick={(event: React.MouseEvent) => {
                                 event.stopPropagation();
                                 router.push(`/profile/${tweet.user.id}`);
@@ -85,20 +94,21 @@ const TweetItem: React.FC<TweetItemProps> = ({tweet, sessionId}) => {
                     )}
                 </div>
                 <p className="mt-2">{tweet.tweet}</p>
-                {showImage && (
+                {showImage && !imageError && tweet.image && (
                     <div className="my-4 relative">
                         {isImageLoading && <LoadingSpinner />}
                         <Image
-                            src={tweet.image as string}
+                            src={tweet.image}
                             alt="Tweet image"
                             width={400}
                             height={300}
                             className={`rounded-lg max-h-60 w-full h-auto object-contain ${isImageLoading ? "invisible" : "visible"}`}
                             onLoad={() => setIsImageLoading(false)}
-                            onError={() => setIsImageLoading(false)}
+                            onError={handleImageError}
                         />
                     </div>
                 )}
+                {imageError && <div className="my-4 text-red-500">Failed to load image</div>}
                 <div className="flex justify-between pt-4">
                     <div
                         className="flex items-center justify-center space-x-2 group hover:text-blue-500 cursor-pointer no-propagation"
@@ -126,5 +136,4 @@ const TweetItem: React.FC<TweetItemProps> = ({tweet, sessionId}) => {
         </div>
     );
 };
-
 export default TweetItem;

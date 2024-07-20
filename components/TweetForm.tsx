@@ -1,10 +1,9 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useState, useCallback} from "react";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import * as z from "zod";
 import {addTweet, editTweet, getTweetById} from "@/app/(home)/tweets/[id]/actions";
 import {useRouter} from "next/navigation";
-
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import Image from "next/image";
 import {DocumentArrowUpIcon, XMarkIcon} from "@heroicons/react/24/outline";
@@ -18,10 +17,12 @@ const schema = z.object({
 interface TweetFormProps {
     onClose: () => void;
     id?: number;
+    initialData?: {tweet: string; image: string | null};
 }
 
-const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
+const TweetForm: React.FC<TweetFormProps> = ({onClose, id, initialData}) => {
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(!initialData && !!id);
     const {
         register,
         handleSubmit,
@@ -29,28 +30,34 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
         formState: {errors},
     } = useForm({
         resolver: zodResolver(schema),
-        defaultValues: {tweet: ""},
+        defaultValues: initialData || {tweet: ""},
     });
 
     const [selectedFileModal, setSelectedFileModal] = useState<File | null>(null);
-    const [imagePreviewModal, setImagePreviewModal] = useState<string | null>(null);
+    const [imagePreviewModal, setImagePreviewModal] = useState<string | null>(initialData?.image || null);
     const [imageRemoved, setImageRemoved] = useState(false);
-    const [originalImageUrl, setOriginalImageUrl] = useState<string | null>(null);
+
+    const fetchTweet = useCallback(
+        async (tweetId: number) => {
+            setIsLoading(true);
+            try {
+                const data = await getTweetById(tweetId);
+                setValue("tweet", data.tweet);
+                setImagePreviewModal(data.image);
+            } catch (error) {
+                console.error("Failed to fetch tweet:", error);
+            } finally {
+                setIsLoading(false);
+            }
+        },
+        [setValue]
+    );
 
     useEffect(() => {
-        const fetchTweet = async (id: number) => {
-            const data = await getTweetById(id);
-            setValue("tweet", data.tweet);
-            if (data.image) {
-                setImagePreviewModal(data.image);
-                setOriginalImageUrl(data.image);
-            }
-        };
-
-        if (id) {
-            fetchTweet(Number(id));
+        if (id && !initialData) {
+            fetchTweet(id);
         }
-    }, [id, setValue]);
+    }, [id, initialData, fetchTweet]);
 
     const onSubmit = async (data: {tweet: string}) => {
         let imageUrl: string | null = null;
@@ -61,20 +68,20 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
             const storageRef = ref(storage, `tweets/${selectedFileModal.name}`);
             const snapshot = await uploadBytes(storageRef, selectedFileModal);
             imageUrl = await getDownloadURL(snapshot.ref);
-        } else if (originalImageUrl) {
-            imageUrl = originalImageUrl;
+        } else if (imagePreviewModal) {
+            imageUrl = imagePreviewModal;
         }
 
         try {
             if (id) {
-                await editTweet(Number(id), data.tweet, imageUrl);
+                await editTweet(id, data.tweet, imageUrl);
             } else {
                 await addTweet(data.tweet, imageUrl);
             }
             router.refresh();
             onClose();
         } catch (error) {
-            console.error((error as Error).message);
+            console.error("Failed to submit tweet:", error);
         }
     };
 
@@ -101,34 +108,55 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <div>
                 <label>Tweet</label>
-                <textarea {...register("tweet")} className="w-full p-2 border rounded text-black" />
+                <textarea
+                    {...register("tweet")}
+                    className={`w-full p-2 border text-black ${isLoading ? "bg-gray-100" : ""}`}
+                    disabled={isLoading}
+                    placeholder={isLoading ? "Loading..." : "What's happening?"}
+                />
                 {errors.tweet && <p className="text-red-500">{errors.tweet.message}</p>}
             </div>
             <div className="my-2">
-                <div className="flex items-center space-x-2">
-                    <input
-                        type="file"
-                        id="imageFileModal"
-                        name="imageFileModal"
-                        accept="image/*"
-                        className="hidden"
-                        onChange={handleFileChangeModal}
-                    />
-                    <label
-                        htmlFor="imageFileModal"
-                        className="cursor-pointer bg-gray-700 hover:bg-gray-800 text-gray-200 px-2 py-2 rounded-full flex items-center space-x-2"
-                    >
-                        <DocumentArrowUpIcon className="h-6 w-6 text-gray-400" />
-                    </label>
-                    {imagePreviewModal && (
-                        <button
-                            type="button"
-                            className="bg-gray-700 hover:bg-gray-800 text-white font-bold py-2 px-2 rounded-full"
-                            onClick={handleRemoveImageModal}
+                <div className="flex items-center justify-between space-x-2">
+                    <div className="flex gap-2">
+                        <input
+                            type="file"
+                            id="imageFileModal"
+                            name="imageFileModal"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={handleFileChangeModal}
+                            disabled={isLoading}
+                        />
+                        <label
+                            htmlFor="imageFileModal"
+                            className={`pixel-button cursor-pointer bg-gray-700 !hover:bg-gray-900 text-gray-200 px-2 py-2 rounded-full flex items-center space-x-2 ${
+                                isLoading ? "opacity-50 cursor-not-allowed" : ""
+                            }`}
                         >
-                            <XMarkIcon className="h-5 w-5" />
-                        </button>
-                    )}
+                            <DocumentArrowUpIcon className="h-6 w-6 text-gray-400" />
+                        </label>
+                        {imagePreviewModal && (
+                            <button
+                                type="button"
+                                className={`pixel-button bg-gray-700 !hover:bg-gray-900 text-white font-bold py-2 px-2 rounded-full ${
+                                    isLoading ? "opacity-50 cursor-not-allowed" : ""
+                                }`}
+                                onClick={handleRemoveImageModal}
+                                disabled={isLoading}
+                            >
+                                <XMarkIcon className="h-5 w-5" />
+                            </button>
+                        )}
+                    </div>
+
+                    <SubmitButton
+                        onClick={handleSubmit(onSubmit)}
+                        idleText={`${id ? "Edit" : "Add"} Tweet`}
+                        className={`pixel-button bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 ${
+                            isLoading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                    />
                 </div>
                 {imagePreviewModal && (
                     <div className="mt-4">
@@ -142,11 +170,6 @@ const TweetForm: React.FC<TweetFormProps> = ({onClose, id}) => {
                     </div>
                 )}
             </div>
-            <SubmitButton
-                onClick={handleSubmit(onSubmit)}
-                idleText={`${id ? "Edit" : "Add"} Tweet`}
-                className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-            />
         </form>
     );
 };

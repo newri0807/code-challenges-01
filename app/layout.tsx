@@ -1,8 +1,11 @@
 import type {Metadata} from "next";
-import {Inter} from "next/font/google";
+import localFont from "next/font/local";
 import "./globals.css";
 
-const inter = Inter({subsets: ["latin"]});
+const myFont = localFont({
+    src: "./fonts/DungGeunMo.ttf",
+    display: "swap",
+});
 
 export const metadata: Metadata = {
     title: "clone tweeter Next App",
@@ -15,8 +18,8 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="en" suppressHydrationWarning>
-            <body className={inter.className + ` font-mono bg-black *:text-white`}>{children}</body>
+        <html lang="en" suppressHydrationWarning className={myFont.className}>
+            <body className={`bg-black *:text-white`}>{children}</body>
         </html>
     );
 }

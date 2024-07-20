@@ -10,7 +10,7 @@ export default function AddTweetButton() {
     };
     return (
         <div>
-            <button onClick={handleAdd} className="w-full bg-blue-500 text-white rounded-full py-3 mt-4 font-bold">
+            <button onClick={handleAdd} className="pixel-button w-full bg-blue-500 hover:bg-blue-700 text-white rounded-full py-3 mt-4 font-bold">
                 게시하기
             </button>
 

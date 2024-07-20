@@ -1,3 +1,100 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .pixel-border {
+        @apply border border-gray-700 rounded-none;
+        box-shadow: 4px 4px 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-border-t {
+        @apply border-t border-t-gray-700;
+        box-shadow: 0 -4px 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-border-r {
+        @apply border-r border-r-gray-700;
+        box-shadow: 4px 0 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-border-b {
+        @apply border-b border-b-gray-700;
+        box-shadow: 0 4px 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-border-l {
+        @apply border-l border-l-gray-700;
+        box-shadow: -4px 0 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-border-x {
+        @apply border-l border-r border-l-gray-700 border-r-gray-700;
+        box-shadow: 4px 0 0 0 rgba(255, 255, 255, 0.5), -4px 0 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-border-y {
+        @apply border-t border-b border-t-gray-700 border-b-gray-700;
+        box-shadow: 0 4px 0 0 rgba(255, 255, 255, 0.5), 0 -4px 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-button {
+        @apply px-4 py-2 bg-gray-800 text-white font-bold uppercase tracking-wider 
+               border-2 border-transparent rounded-none cursor-pointer 
+               transition-all duration-200 ease-in-out relative;
+        box-shadow: 3px 3px 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-button::before {
+        content: "";
+        @apply absolute inset-0 bg-white opacity-0 transition-opacity duration-200 ease-in-out;
+    }
+
+    .pixel-button:hover {
+        @apply bg-gray-700 transform translate-x-0.5 translate-y-0.5;
+        box-shadow: 1px 1px 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-button:hover::before {
+        @apply opacity-5;
+    }
+
+    .pixel-button:active {
+        @apply bg-gray-900 transform translate-x-1 translate-y-1;
+        box-shadow: 0px 0px 0 0 rgba(255, 255, 255, 0.5);
+    }
+
+    .pixel-button:active::before {
+        @apply opacity-10;
+    }
+
+    input,
+    textarea {
+        @apply px-3 py-2 bg-gray-800 !text-white border-2 border-gray-600 rounded-none
+               transition-all duration-100 ease-in-out;
+        box-shadow: 0 4px 0 -2px rgba(255, 255, 255, 0.2), 0 4px 0 0 rgba(0, 0, 0, 0.7), 0 6px 0 -2px rgba(255, 255, 255, 0.2),
+            0 6px 0 0 rgba(0, 0, 0, 0.7);
+    }
+
+    input::placeholder,
+    textarea::placeholder {
+        @apply text-gray-400;
+    }
+
+    input:hover,
+    textarea:hover {
+        @apply bg-gray-700;
+    }
+
+    input:focus,
+    textarea:focus {
+        @apply outline-none border-white;
+    }
+
+    input:active,
+    textarea:active {
+        @apply transform translate-y-1;
+        box-shadow: 0 3px 0 -2px rgba(255, 255, 255, 0.2), 0 3px 0 0 rgba(0, 0, 0, 0.7), 0 5px 0 -2px rgba(255, 255, 255, 0.2),
+            0 5px 0 0 rgba(0, 0, 0, 0.7);
+    }
+}

@@ -40,9 +40,9 @@ export default function LoginForm() {
     };
 
     return (
-        <div className="max-w-md mx-auto  border border-gray-700 rounded-2xl shadow-sm overflow-hidden">
-            <div className="p-12">
-                <h2 className="text-2xl font-bold text-center text-gray-200 mb-10">Log in to your account</h2>
+        <div className="mx-auto !pixel-border border border-neutral-700 bg-black shadow-sm overflow-hidden ">
+            <div className="p-12 w-[450px]">
+                <h2 className="text-2xl font-bold text-center text-gray-200 mb-10">Login</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="mb-6">
                         <label htmlFor="email" className="block text-gray-300 text-sm font-medium mb-2">
@@ -52,7 +52,7 @@ export default function LoginForm() {
                             id="email"
                             type="email"
                             {...register("email")}
-                            className="appearance-none border border-gray-700 rounded-full w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="rounded-full w-full py-3 px-4 text-gray-900 leading-tight "
                             placeholder="you@example.com"
                         />
                         {errors.email && <p className="text-red-500 text-xs mt-2">{errors.email.message}</p>}
@@ -65,7 +65,7 @@ export default function LoginForm() {
                             id="password"
                             type="password"
                             {...register("password")}
-                            className="appearance-none border border-gray-700 rounded-full w-full py-3 px-4 text-gray-900 leading-tight focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                            className="rounded-full w-full py-3 px-4 text-gray-900 leading-tight "
                             placeholder="********"
                         />
                         {errors.password && <p className="text-red-500 text-xs mt-2">{errors.password.message}</p>}
@@ -75,7 +75,7 @@ export default function LoginForm() {
                         <SubmitButton
                             onClick={handleSubmit(onSubmit)}
                             idleText="Log in"
-                            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                            className="pixel-button bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-6 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                         />
                         <Link className="text-sm text-blue-500 hover:text-blue-600 font-medium" href="/create-account">
                             Join us?

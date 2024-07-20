@@ -37,13 +37,13 @@ export default async function TweetPage({params}: {params: {id: string}}) {
     return (
         <div className="bg-black text-white min-h-screen w-full">
             {/* Header */}
-            <div className="border-b border-gray-700 p-4">
+            <div className="!pixel-border-b border-b border-gray-700 p-4">
                 <Link href="/" className="flex items-center text-blue-500">
                     <ArrowLeftIcon className="w-4 h-4 mr-2" />
                     홈으로 돌아가기
                 </Link>
             </div>
-            <div className="border-b border-gray-700 pb-4 mb-4 p-4">
+            <div className="!pixel-border-b border-b border-gray-700 pb-4 mb-4 p-4">
                 <div className="flex w-full justify-between item-center">
                     <div className="flex items-center space-x-4">
                         <Link href={`/profile/${tweet.user.id}`}>
@@ -74,12 +74,12 @@ export default async function TweetPage({params}: {params: {id: string}}) {
                     </div>
                 ) : (
                     <div className="flex justify-center items-center align-middle max-h-60">
-                        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 !pixel-border-t  border-t-2 !pixel-border-b border-b-2 !pixel-border-b border-blue-500"></div>
                     </div>
                 )}
                 <p className="text-sm text-gray-500 mt-2">게시일: {new Date(tweet.created_at).toLocaleString()}</p>
             </div>
-            <div className="flex justify-between pb-4 px-4 border-b border-gray-700">
+            <div className="flex justify-between pb-4 px-4 !pixel-border-b border-b border-gray-700">
                 <div className="flex items-center justify-center space-x-2 group hover:text-blue-500 cursor-pointer">
                     <CommentCount tweetId={tweet.id} />
                 </div>

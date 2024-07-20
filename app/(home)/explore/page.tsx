@@ -66,7 +66,7 @@ export default async function SearchPage({searchParams}: {searchParams: {q: stri
                 {searchResults.length > 0 ? (
                     <div className="space-y-4">
                         {searchResults.map((tweet) => (
-                            <div key={tweet.id} className="bg-gray-900 rounded-lg p-4 shadow-md">
+                            <div key={tweet.id} className="bg-gray-900  p-4 shadow-md">
                                 <TweetItem tweet={tweet} sessionId={session?.id!} />
                             </div>
                         ))}

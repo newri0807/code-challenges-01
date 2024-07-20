@@ -54,7 +54,7 @@ export default async function ProfilePage({params}: ProfilePageProps) {
     return (
         <div className="bg-black text-white min-h-screen w-full">
             {/* Header */}
-            <header className="sticky top-0 z-10 bg-black bg-opacity-80 backdrop-blur-md border-b border-gray-800 p-4 flex items-center">
+            <header className="sticky top-0 z-10 bg-black bg-opacity-80 backdrop-blur-md !pixel-border-b border-b border-gray-800 p-4 flex items-center">
                 <Link href="/" className="mr-4">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
@@ -85,7 +85,7 @@ export default async function ProfilePage({params}: ProfilePageProps) {
                         alt={user.username}
                         width={134}
                         height={134}
-                        className="absolute -top-16 w-32 h-32 rounded-full border-4 border-black bg-black"
+                        className="absolute -top-16 w-32 h-32 rounded-full border-4 !pixel-border-b border-black bg-black"
                     />
                     <div className="flex justify-end pt-4">
                         {session?.id === userId ? <EditProfileModal user={user} /> : <FollowStatus userId={userId} currentUserId={session?.id!} />}
@@ -121,8 +121,8 @@ export default async function ProfilePage({params}: ProfilePageProps) {
                     {session?.id === userId && (
                         <div className="mt-4">
                             <form action={logOut}>
-                                <button className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">
-                                    로그아웃
+                                <button className="pixel-button w-full bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-full transition duration-200 ease-in-out">
+                                    Log out
                                 </button>
                             </form>
                         </div>
@@ -131,11 +131,14 @@ export default async function ProfilePage({params}: ProfilePageProps) {
             </div>
 
             {/* User's Tweets */}
-            <div className="mt-4 border-t border-gray-800">
+            <div className="mt-4 !pixel-border-t  border-t border-gray-800">
                 {tweets.length > 0 ? (
                     <div>
                         {tweets.map((tweet) => (
-                            <div key={tweet.id} className="border-b border-gray-800 p-4 hover:bg-gray-900 transition duration-200 ease-in-out">
+                            <div
+                                key={tweet.id}
+                                className="!pixel-border-b border-b border-gray-800 p-4 hover:bg-gray-900 transition duration-200 ease-in-out"
+                            >
                                 <TweetItem tweet={tweet} sessionId={session?.id!} />
                             </div>
                         ))}

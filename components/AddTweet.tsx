@@ -58,7 +58,7 @@ function SubmitButton() {
         <button
             type="submit"
             disabled={pending}
-            className="bg-blue-500 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-600 transition duration-200 ease-in-out disabled:opacity-50"
+            className="pixel-button bg-blue-500 text-white font-bold py-2 px-4 rounded-full hover:bg-blue-600 transition duration-200 ease-in-out disabled:opacity-50"
         >
             {pending ? "Tweeting..." : "Tweet"}
         </button>
@@ -104,15 +104,13 @@ export default function AddTweet() {
     const isOverLimit = remainingChars < 0;
 
     return (
-        <div className="w-full mx-auto my-2 border-b border-gray-700">
+        <div className="w-full mx-auto my-2 !pixel-border-b border-b border-gray-700 hidden lg:block md:block">
             <form action={handleSubmit} className="shadow-md rounded-lg p-6">
                 <div className="mb-4">
                     <textarea
                         name="tweet"
                         placeholder="What's happening?"
-                        className={`w-full px-3 py-2 text-gray-700 border rounded-lg focus:outline-none ${
-                            isOverLimit ? "border-red-500 focus:border-red-500" : "focus:border-blue-500"
-                        }`}
+                        className={`w-full px-3 py-2 text-gray-700  ${isOverLimit ? "!border-red-500" : ""}`}
                         rows={4}
                         value={tweetContent}
                         onChange={(e) => setTweetContent(e.target.value)}
@@ -123,7 +121,7 @@ export default function AddTweet() {
                         <input type="file" id="imageFile" name="imageFile" accept="image/*" className="hidden" onChange={handleFileChange} />
                         <label
                             htmlFor="imageFile"
-                            className="cursor-pointer bg-gray-700 hover:bg-gray-800 text-gray-200 px-2 py-2 rounded-full flex items-center space-x-2"
+                            className="pixel-button cursor-pointer bg-gray-700 hover:bg-gray-800 text-gray-200 px-2 py-2 rounded-full flex items-center space-x-2"
                         >
                             <DocumentArrowUpIcon className="h-6 w-6 text-gray-400" />
                         </label>

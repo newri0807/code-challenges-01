@@ -15,8 +15,8 @@ const TweetList: React.FC<TweetListProps> = async ({initialPage}) => {
     const session = await getSession();
 
     return (
-        <div className="flex-1 border-r border-gray-700 overflow-y-auto">
-            <div className="border-b border-gray-700 p-4">
+        <div className="flex-1 !pixel-border-r border-r border-gray-700 overflow-y-auto">
+            <div className="!pixel-border-b border-b border-gray-700 p-4">
                 <h2 className="text-xl font-bold">추천</h2>
             </div>
             <div className="p-4 space-y-4">
@@ -24,7 +24,7 @@ const TweetList: React.FC<TweetListProps> = async ({initialPage}) => {
                     <TweetItem key={tweet.id} tweet={tweet} sessionId={session?.id!} />
                 ))}
             </div>
-            <div className="flex justify-between items-center p-4 border-t border-gray-700">
+            <div className="flex justify-between items-center p-4 !pixel-border-t  border-t border-gray-700">
                 <Link href={`/?page=${initialPage > 1 ? initialPage - 1 : 1}`} className={`flex items-center ${initialPage <= 1 ? "invisible" : ""}`}>
                     <ArrowLeftIcon className="w-4 h-4 mr-2" />
                     이전

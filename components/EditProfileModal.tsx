@@ -8,7 +8,7 @@ import {User} from "@/lib/type";
 import {ref, uploadBytes, getDownloadURL} from "firebase/storage";
 import {storage} from "@/lib/firebase";
 import {CheckBadgeIcon, DocumentArrowUpIcon} from "@heroicons/react/24/outline";
-import { updateUser } from '@/app/(home)/profile/[id]/actions';
+import {updateUser} from "@/app/(home)/profile/[id]/actions";
 
 // Validation schema using Zod
 const profileSchema = z.object({
@@ -75,8 +75,11 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({user}) => {
 
     return (
         <>
-            <button onClick={() => setIsModalOpen(true)} className="bg-black text-white px-4 py-2 rounded-full border border-gray-600 font-bold">
-                프로필 수정
+            <button
+                onClick={() => setIsModalOpen(true)}
+                className="pixel-button bg-black text-white px-4 py-2 rounded-full border border-gray-600 font-bold"
+            >
+                profile edit
             </button>
 
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>

@@ -63,7 +63,7 @@ const PopupTweetActions: React.FC<TweetActionsProps> = ({tweetId}) => {
                 <div
                     ref={popupRef}
                     id={`popup-${tweetId}`}
-                    className="hidden absolute right-0 mt-2 w-48 bg-black border border-gray-600 rounded-md shadow-lg z-50"
+                    className="hidden absolute right-0 mt-2 w-48 bg-black border !pixcel-border border-gray-600  shadow-lg z-50"
                 >
                     <button onClick={handleEditClick} className="block w-full px-4 py-2 text-left text-white hover:bg-gray-900">
                         Edit

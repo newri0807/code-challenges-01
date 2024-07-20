@@ -13,9 +13,9 @@ type ResponseListProps = {
 
 export const ResponseList: React.FC<ResponseListProps> = React.memo(({responses, sessionUserId, onEditResponse, onDeleteResponse}) => {
     return (
-        <div className="bg-gray-900 p-4 shadow-md ">
+        <div className="p-4">
             {responses.map((response) => (
-                <div key={response.id} className="border-b border-gray-800 py-4 flex items-start last:border-none">
+                <div key={response.id} className="!pixel-border-b border-b border-gray-800 py-4 flex items-start last:border-none">
                     <Image
                         src={response.user.avatar || "/default-avatar.png"}
                         alt={response.user.username}

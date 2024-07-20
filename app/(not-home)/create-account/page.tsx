@@ -42,8 +42,8 @@ export default function CreateAccount() {
     };
 
     return (
-        <div className="max-w-md mx-auto  border border-gray-700 rounded-2xl shadow-sm overflow-hidden">
-            <div className="p-12">
+        <div className="max-w-md mx-auto !pixel-border border border-neutral-700 bg-black shadow-sm overflow-hidden">
+            <div className="p-12 w-[450px]">
                 <div>
                     <h2 className="text-center text-3xl font-extrabold text-gray-200">Create an account</h2>
                 </div>
@@ -57,7 +57,7 @@ export default function CreateAccount() {
                                 id="email"
                                 type="email"
                                 {...register("email")}
-                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-t  border-transparent"
                                 placeholder="Email address"
                             />
                             {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
@@ -70,7 +70,7 @@ export default function CreateAccount() {
                                 id="password"
                                 type="password"
                                 {...register("password")}
-                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-t  border-transparent"
                                 placeholder="Password"
                             />
                             {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
@@ -83,7 +83,7 @@ export default function CreateAccount() {
                                 id="username"
                                 type="text"
                                 {...register("username")}
-                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                className="appearance-none rounded-full w-full px-4 py-3 border border-gray-700 text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-t  border-transparent"
                                 placeholder="Name"
                             />
                             {errors.username && <p className="text-red-500 text-xs mt-1">{errors.username.message}</p>}
@@ -95,7 +95,7 @@ export default function CreateAccount() {
                     <SubmitButton
                         onClick={handleSubmit(onSubmit)}
                         idleText="Create Account"
-                        className="w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="pixel-button w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-full text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
                     />
                     <div className="text-center mt-4">
                         <Link className="text-sm text-blue-500 hover:text-blue-600 font-medium" href="/log-in">

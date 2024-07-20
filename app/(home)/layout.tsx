@@ -14,12 +14,12 @@ export default function RootLayout({
 }>) {
     return (
         <div className="flex h-full bg-black text-white">
-            <div className="hidden md:block w-64 border-r border-gray-700">
+            <div className="hidden md:block w-64 ">
                 <LeftSidebar />
             </div>
-            <main className="flex-1 min-h-screen border-x border-gray-800 relative">
+            <main className="flex-1 min-h-screen !pixel-border-l border-l border-gray-800 relative">
                 <div className="mx-auto pb-16 md:pb-0">{children}</div>
-                <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black border-t border-gray-800">
+                <div className="md:hidden fixed bottom-0 left-0 right-0 bg-black !pixel-border-t  border-t border-gray-800">
                     <MobileBottomNav />
                 </div>
             </main>

@@ -1,4 +1,5 @@
 import type {Metadata} from "next";
+import bg from "../../public/login_bg.gif";
 
 export const metadata: Metadata = {
     title: "clone tweeter Next App",
@@ -11,8 +12,15 @@ export default function Layout({
     children: React.ReactNode;
 }>) {
     return (
-        <main className="flex h-screen w-full flex-col items-center justify-center align-middle">
+        <main
+            className="flex h-screen w-full flex-col items-center justify-center align-middle bg-cover bg-center"
+            style={{
+                backgroundImage: `url(${bg.src})`,
+            }}
+        >
             <div className="items-center justify-between text-sm lg:flex">{children}</div>
         </main>
     );
 }
+
+//    <div className="bg-cover bg-center" style={{backgroundImage: "url('/login_bg.gif')"}}>

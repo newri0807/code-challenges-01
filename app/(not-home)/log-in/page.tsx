@@ -1,13 +1,9 @@
 import LoginForm from "@/components/LoginForm";
 import React from "react";
 
-
-
 const Page = () => {
-    return (
-        <div>
+    return (     
             <LoginForm />
-        </div>
     );
 };
 
