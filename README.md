@@ -6,7 +6,7 @@
 
 ## 🖼️ 프로젝트 썸네일
 
-![Twitter Clone 썸네일](https://github.com/user-attachments/assets/03c6c063-50af-475c-b6a7-8ee08b0b29f3)
+![Twitter Clone 썸네일](https://github.com/user-attachments/assets/3edfa04a-2054-4b6e-8701-70a9e7cae67b)
 
 ## 🚀 주요 기능
 
