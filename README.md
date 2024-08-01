@@ -132,8 +132,8 @@ FIREBASE_PROJECT_ID=your_firebase_project_id
 ## 📞 연락처
 
 프로젝트에 대한 질문이나 피드백이 있으시면 <a href="mailto:newri0807@gmail.com">
-<img src="https://img.shields.io/badge/-Gmail-d14836?style=flat&logo=Gmail&logoColor=white" alt="Gmail" />
-</a>로 연락 주시기 바랍니다.
+<img src="https://img.shields.io/badge/-Gmail-d14836?style=flat-square&logo=Gmail&logoColor=white" alt="Gmail" />
+</a> 로 연락 주시기 바랍니다.
 
 ---
 
