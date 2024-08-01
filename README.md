@@ -125,15 +125,10 @@ FIREBASE_PROJECT_ID=your_firebase_project_id
 
 프로젝트 개선에 기여하고 싶으시다면 언제든 Pull Request를 보내주세요. 대규모 변경사항의 경우, 먼저 이슈를 열어 논의해 주시기 바랍니다.
 
-## 📄 라이선스
-
-이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
 
 ## 📞 연락처
 
-프로젝트에 대한 질문이나 피드백이 있으시면 <a href="mailto:newri0807@gmail.com">
-<img src="https://img.shields.io/badge/-Gmail-d14836?style=flat-square&logo=Gmail&logoColor=white" alt="Gmail" />
-</a> 로 연락 주시기 바랍니다.
+프로젝트에 대한 질문이나 피드백이 있으시면 이메일로 연락 주시기 바랍니다.
 
 ---
 
