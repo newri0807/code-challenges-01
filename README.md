@@ -121,15 +121,6 @@ FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
 FIREBASE_PROJECT_ID=your_firebase_project_id
 ```
 
-## 🤝 기여하기
-
-프로젝트 개선에 기여하고 싶으시다면 언제든 Pull Request를 보내주세요. 대규모 변경사항의 경우, 먼저 이슈를 열어 논의해 주시기 바랍니다.
-
-
-## 📞 연락처
-
-프로젝트에 대한 질문이나 피드백이 있으시면 이메일로 연락 주시기 바랍니다.
-
 ---
 
 🐦 Twitter Clone 프로젝트를 즐겨보세요!
